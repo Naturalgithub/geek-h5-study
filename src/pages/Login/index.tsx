@@ -1,12 +1,15 @@
+import { login } from '@/store/actions/login'
+import { LoginForm } from '@/types/data'
 import { Button, Form, Input, List, NavBar } from 'antd-mobile'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import styles from './index.module.scss'
 export default function Login() {
   const history = useHistory()
+  const dispatch = useDispatch()
 
-  const onFinish = (value: any) => {
-    console.log(value)
-
+  const onFinish = (values: LoginForm) => {
+    dispatch(login(values))
   }
 
   return (

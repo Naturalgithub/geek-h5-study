@@ -1,46 +1,13 @@
-# Getting Started with Create React App
+### 开发踩坑
+1. 写入ThunkAction后如果出现以下报错：
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+(alias) delTodo(id: number): RootThunkAction import delTodo 类型“RootThunkAction”的参数不能赋给类型“AnyAction”的参数。 类型 "RootThunkAction" 中缺少属性 "type"，但类型 "AnyAction" 中需要该属性
 
-## Available Scripts
+原因：react-redux版本高了
 
-In the project directory, you can run:
+解决办法：需要把react-redux版本降到@7版本
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+yarn add react-redux@7
+————————————————
+版权声明：本文为CSDN博主「Nikki_u」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/nikki_u/article/details/125132995

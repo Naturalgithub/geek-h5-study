@@ -1,15 +1,21 @@
-import store from "@/store";
-import { ThunkAction } from "redux-thunk";
- 
-// state的state的类型 
-// ReturnType是一个泛型工具类型，可以获取一个函数类型的返回值类型
-export const RootState = ReturnType<typeof store.getState>
-// 所有Action数据
-export type RootAction = LoginAction
-//thunkAction类型
-export type RootThunkAction = ThunkAction<void,RootAction,unknown,RootAction>
+// 存放和redux相关的所有类型
+// RootState
+// RootAction
+// RootThunkAction
+// 各个模块的Action
 
-// 各个默认的action
+import store from '@/store'
+import { ThunkAction } from 'redux-thunk'
+
+// store的state的类型
+export type RootState = ReturnType<typeof store.getState>
+// 所有的Action的类型
+export type RootAction = LoginAction
+// thunkAction类型
+
+export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
+
+// 各个默认的Action
 export type LoginAction = {
-  type:'login/login'
+  type: 'login/login'
 }
