@@ -7,6 +7,17 @@ const vw = pxToViewport({
 })
 
 module.exports = {
+  // devServer: {
+  //   proxy: {
+  //     "/proxy": {
+  //       target: "http://geek/itheima.net/v1_0/",
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         "^/proxy": "",
+  //       },
+  //     },
+  //   },
+  // },
   // webpack 配置
   webpack: {
     // 配置别名
