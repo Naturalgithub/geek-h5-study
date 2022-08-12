@@ -14,10 +14,10 @@ function App() {
         <Route exact
           path="/"
           render={() => <Redirect to="/home"></Redirect>}>
-          <Layout></Layout>
         </Route>
-        <Route path='/login'>
-          <Login></Login>
+        <Route path='/home' component={Layout}>
+        </Route>
+        <Route path='/login' component={Login}>
         </Route>
       </div>
     </Router>
