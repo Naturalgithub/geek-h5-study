@@ -4,11 +4,11 @@ export type LoginForm = { mobile: string; code: string }
 // 统一的axios的响应类型
 export type ApiResponse<T> = {
   message: string
-  data:T
+  data: T
 }
 
 export type Token = {
   token: string
-  refresh_Token:string
+  refresh_Token: string
 }
 
