@@ -11,3 +11,6 @@ yarn add react-redux@7
 ————————————————
 版权声明：本文为CSDN博主「Nikki_u」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/nikki_u/article/details/125132995
+
+2. 使用Toast组件 发现 报错 这是正常的
+  react_devtools_backend.js:4026 Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: 

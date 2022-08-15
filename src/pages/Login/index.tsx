@@ -1,5 +1,6 @@
-import { login } from '@/store/actions/login'
+import { getCode, login } from '@/store/actions/login'
 import { LoginForm } from '@/types/data'
+import { useCountDown } from '@/utils/hooks'
 import { Button, Form, Input, List, NavBar, Toast } from 'antd-mobile'
 import { InputRef } from 'antd-mobile/es/components/input'
 import { useRef } from 'react'
@@ -9,7 +10,6 @@ import styles from './index.module.scss'
 export default function Login() {
   const history = useHistory()
   const dispatch = useDispatch()
-  // const formRef = useRef(null)
   const [form] = Form.useForm()
 
   const onFinish = async (values: LoginForm) => {
@@ -17,14 +17,14 @@ export default function Login() {
       await dispatch(login(values))
       Toast.show({
         content: '登陆成功',
-        icon: 'success'
+        icon: 'success',
       })
       // 跳转到首页
       history.push('/home')
     } catch (error) {
       Toast.show({
         content: '登陆失败',
-        icon: 'fail'
+        icon: 'fail',
       })
     }
   }
@@ -35,6 +35,7 @@ export default function Login() {
   // 如果为空或手机号格式错误时，让文本框自动获得焦点
   // 获取验证码
   const mobileRef = useRef<InputRef>(null)
+  const { start, timeLeft } = useCountDown()
 
   const onGetCode = () => {
     const mobile = form.getFieldValue('mobile')
@@ -45,9 +46,12 @@ export default function Login() {
       mobileRef.current!.focus()
       return
     }
-    console.log('发送请求获取验证！')
 
-
+    // 开始倒计时
+    if (timeLeft === 0) {
+      start()
+      dispatch(getCode(mobile))
+    }
   }
 
   return (
@@ -59,7 +63,11 @@ export default function Login() {
         <h2 className="title">账号登录</h2>
 
         {/* 失去焦点的时候以及改变的时候触发校验 */}
-        <Form onFinish={onFinish} validateTrigger={['onChange', 'onBlur']} form={form}>
+        <Form
+          onFinish={onFinish}
+          validateTrigger={['onChange', 'onBlur']}
+          form={form}
+        >
           <Form.Item
             className="login-item"
             name="mobile"
@@ -74,11 +82,22 @@ export default function Login() {
               },
             ]}
           >
-            <Input placeholder="请输入用户名" autoComplete='off' ref={mobileRef}></Input>
+            <Input
+              placeholder="请输入用户名"
+              autoComplete="off"
+              ref={mobileRef}
+            ></Input>
           </Form.Item>
           <List.Item
             className="login-code-extra"
-            extra={<span className="code-extra" onClick={onGetCode}>发送验证码</span>}
+            extra={
+              <span
+                className="code-extra"
+                onClick={timeLeft === 0 ? onGetCode : undefined}
+              >
+                {timeLeft === 0 ? '发送验证吗' : `${timeLeft}s后重新发送`}
+              </span>
+            }
           >
             <Form.Item
               className="login-item"
@@ -94,16 +113,21 @@ export default function Login() {
                 },
               ]}
             >
-              <Input placeholder="请输入验证码" autoComplete='off'></Input>
+              <Input placeholder="请输入验证码" autoComplete="off"></Input>
             </Form.Item>
           </List.Item>
           <Form.Item>
-            <Button color="primary" block className="login-submit" type='submit' >
+            <Button
+              color="primary"
+              block
+              className="login-submit"
+              type="submit"
+            >
               登录
             </Button>
           </Form.Item>
         </Form>
       </div>
-    </div >
+    </div>
   )
 }

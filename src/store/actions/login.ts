@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import { setToken } from '@/utils/storage';
+import { Toast } from 'antd-mobile';
 import { ApiResponse, LoginForm, Token } from './../../types/data.d';
 import { RootThunkAction } from './../../types/store.d';
 
@@ -14,4 +15,14 @@ export function login(values: LoginForm): RootThunkAction {
     // 存储在localStora中 是存一个对象不要搞错了
     setToken(res.data.data)
   }
+}
+
+export function getCode(mobile: string): RootThunkAction {
+  return async dispatch => {
+    const res = await request.get(`/sms/codes/${mobile}`)
+    console.log(res)
+    Toast.show('成功发送验证码！')
+    // dispatch(
+  }
+
 }
