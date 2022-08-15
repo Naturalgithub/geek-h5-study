@@ -1,6 +1,6 @@
 import { login } from '@/store/actions/login'
 import { LoginForm } from '@/types/data'
-import { Button, Form, Input, List, NavBar } from 'antd-mobile'
+import { Button, Form, Input, List, NavBar, Toast } from 'antd-mobile'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import styles from './index.module.scss'
@@ -8,8 +8,22 @@ export default function Login() {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const onFinish = (values: LoginForm) => {
-    dispatch(login(values))
+  const onFinish = async (values: LoginForm) => {
+    try {
+      await dispatch(login(values))
+      Toast.show({
+        content: '登陆成功',
+        icon: 'success'
+      })
+      // 跳转到首页
+      history.push('/home')
+    } catch (error) {
+      Toast.show({
+        content: '登陆失败',
+        icon: 'fail'
+      })
+    }
+
   }
 
   return (
