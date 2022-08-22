@@ -4,13 +4,13 @@ import { Toast } from 'antd-mobile';
 import axios from 'axios';
 
 
-const instance = axios.create({
+const request = axios.create({
   baseURL: 'http://geek.itheima.net/v1_0',
   timeout: 5000
 })
 
 // 添加请求拦截器
-instance.interceptors.request.use(
+request.interceptors.request.use(
   function (config) {
     // 在请求之前做些什么
     const token = getToken()
@@ -26,7 +26,7 @@ instance.interceptors.request.use(
 )
 
 // 添加响应拦截器
-instance.interceptors.response.use(
+request.interceptors.response.use(
   function (respose) {
     return respose
   },
@@ -41,4 +41,4 @@ instance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-export default instance
+export default request

@@ -1,4 +1,4 @@
-import { Token, User } from './data.d';
+import { Token, User, UserProfile } from './data.d';
 // 存放和redux相关的所有类型
 // RootState
 // RootAction
@@ -26,4 +26,7 @@ export type LoginAction = {
 export type ProfileAction = {
   type: 'profile/getUser'
   payload: User
+} | {
+  type: 'profile/getUserProfile'
+  payload: UserProfile
 }

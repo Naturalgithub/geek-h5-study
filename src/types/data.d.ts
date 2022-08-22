@@ -24,3 +24,13 @@ export type User = {
   like_count: number
 }
 
+// 用户的配置文件信息
+export type UserProfile = {
+  id: string
+  photo: string
+  name: string
+  mobile: string
+  gender: number
+  birthday: string
+  intro: string
+}
