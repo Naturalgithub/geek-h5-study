@@ -1,22 +1,21 @@
 import { getUserProfile } from "@/store/actions/profile";
-import { RootState } from "@/types/store";
-import { List, NavBar } from "antd-mobile";
+import { useInitialState } from "@/utils/hooks";
+import { List, NavBar, Popup } from "antd-mobile";
 import classNames from "classnames";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import EditInput from "./components/EditInput";
 import styles from "./index.module.scss";
 
 export default function Edit() {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const userProfile = useSelector(
-    (state: RootState) => state.profile.userProfile
-  );
+  // 控制显示隐藏
+  const [showInput, setShowInput] = useState<{
+    visible: boolean;
+    type: "" | "name" | "intro";
+  }>({ visible: false, type: "" });
 
-  useEffect(() => {
-    dispatch(getUserProfile());
-  }, [dispatch]);
+  const { userProfile } = useInitialState(getUserProfile, "profile");
 
   const Item = List.Item;
   return (
@@ -39,7 +38,11 @@ export default function Edit() {
             >
               头像
             </Item>
-            <Item arrow extra={userProfile.name}>
+            <Item
+              arrow
+              extra={userProfile.name}
+              onClick={() => setShowInput({ type: "name", visible: true })}
+            >
               昵称
             </Item>
             <Item
@@ -51,6 +54,7 @@ export default function Edit() {
                   {userProfile.intro || "未填写"}
                 </span>
               }
+              onClick={() => setShowInput({ type: "name", visible: true })}
             >
               简介
             </Item>
@@ -65,6 +69,19 @@ export default function Edit() {
             </Item>
           </List>
         </div>
+
+        <Popup
+          visible={showInput.visible}
+          position="right"
+          bodyStyle={{ width: "100vw" }}
+        >
+          <EditInput
+            type={showInput.type}
+            hideInput={() => {
+              setShowInput({ type: "", visible: false });
+            }}
+          ></EditInput>
+        </Popup>
       </div>
     </div>
   );

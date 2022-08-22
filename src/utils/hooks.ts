@@ -1,4 +1,6 @@
+import { RootState } from '@/types/store';
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * @description: 倒计时
@@ -37,4 +39,24 @@ export function useCountDown() {
     timeLeft,
     start
   }
+}
+
+/**
+ * 1. 自动useEffect发送请求
+ * 2. 通过useSelector获取到数据并返回
+ */
+export function useInitialState <K extends keyof RootState>(action:()=>void,stateName:K){
+  const dispatch = useDispatch();
+
+  // 进入组件，就需要发送请求
+  const state = useSelector(
+    (state: RootState) => state[stateName]
+  );
+
+  // 进入组件，需要获取redux的数据
+  useEffect(() => {
+    dispatch(action());
+  }, [dispatch,action]);
+
+  return state
 }
