@@ -14,3 +14,5 @@
 
 2. 使用Toast组件 发现 报错 这是正常的
   react_devtools_backend.js:4026 Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: 
+
+3. git 443 关掉vpn重试就好了

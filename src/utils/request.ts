@@ -1,3 +1,4 @@
+import { getToken } from '@/utils/storage';
 import { Toast } from 'antd-mobile';
 // 封装axios
 import axios from 'axios';
@@ -12,6 +13,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在请求之前做些什么
+    const token = getToken()
+    if (token.token) {
+      config.headers!.Authorization = `Bearer ${token.token}`
+    }
     return config
   },
   function (error) {
