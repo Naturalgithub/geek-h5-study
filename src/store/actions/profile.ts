@@ -42,6 +42,18 @@ export const updateUserProfile = ( key: string, value: string ): RootThunkAction
     })
     
     // 更新简介
-    dispatch(getUserProfile())
+    await dispatch(getUserProfile())
+  }
+}
+
+/**
+ * @description: 更新头像补丁
+ * @param {FormData} fd
+ * @return {*}
+ */
+export const updateUserPhoto = (fd: FormData):RootThunkAction => {
+  return async dispatch => {
+    await request.patch('/user/photo', fd)
+    await dispatch(getUserProfile())
   }
 }
