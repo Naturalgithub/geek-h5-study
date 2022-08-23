@@ -1,8 +1,8 @@
 import request from '@/utils/request';
-import { setToken } from '@/utils/storage';
+import { removeToken, setToken } from '@/utils/storage';
 import { Toast } from 'antd-mobile';
 import { ApiResponse, LoginForm, Token } from './../../types/data.d';
-import { RootThunkAction } from './../../types/store.d';
+import { LoginAction, RootThunkAction } from './../../types/store.d';
 
 export function login(values: LoginForm): RootThunkAction {
   return async dispatch => {
@@ -24,5 +24,11 @@ export function getCode(mobile: string): RootThunkAction {
     Toast.show('成功发送验证码！')
     // dispatch(
   }
+}
 
+export function logout(): LoginAction {
+  removeToken()
+  return {
+    type:'login/logout'
+  }
 }

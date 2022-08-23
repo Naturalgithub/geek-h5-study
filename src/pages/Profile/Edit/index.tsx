@@ -1,11 +1,21 @@
+import { logout } from "@/store/actions/login";
 import {
   getUserProfile,
   updateUserPhoto,
   updateUserProfile,
 } from "@/store/actions/profile";
 import { useInitialState } from "@/utils/hooks";
-import { List, NavBar, Popup, Toast } from "antd-mobile";
+import {
+  Button,
+  DatePicker,
+  Dialog,
+  List,
+  NavBar,
+  Popup,
+  Toast,
+} from "antd-mobile";
 import classNames from "classnames";
+import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -92,6 +102,31 @@ export default function Edit() {
     hideList();
   };
 
+  // showBirthday状态控制日期选择器显示或隐藏
+  const [showBirthday, setShowBirthday] = useState(false);
+
+  const onBirthdayShow = () => {
+    setShowBirthday(true);
+  };
+
+  const onBirthdayHide = () => {
+    setShowBirthday(false);
+  };
+
+  // 推出登陆
+  const logoutFn = () => {
+    Dialog.confirm({
+      title: "温馨提示",
+      content: "您确定要退出吗",
+      onConfirm() {
+        // 清除localstoragetoken和redux里面的token
+        dispatch(logout());
+        // 跳转登陆页登陆
+        history.push("/login");
+      },
+    });
+  };
+
   return (
     <div className={styles.root}>
       <div className="content">
@@ -143,10 +178,16 @@ export default function Edit() {
             >
               性别
             </Item>
-            <Item arrow extra={userProfile.birthday}>
+            <Item arrow extra={userProfile.birthday} onClick={onBirthdayShow}>
               生日
             </Item>
           </List>
+
+          <div className="logout">
+            <Button className="btn" onClick={logoutFn}>
+              退出登录
+            </Button>
+          </div>
         </div>
 
         {/* 昵称和简介弹层 */}
@@ -175,6 +216,18 @@ export default function Edit() {
 
           <input type="file" hidden ref={fileRef} onChange={onChangePhoto} />
         </Popup>
+
+        {/* 生日 选择器 */}
+        <DatePicker
+          visible={showBirthday}
+          value={new Date(userProfile.birthday)}
+          onClose={onBirthdayHide}
+          min={new Date("1900-01-01")}
+          max={new Date()}
+          onConfirm={(value) => {
+            onUpdate("birthday", dayjs(value).format("YYYY-MM-DD"));
+          }}
+        ></DatePicker>
       </div>
     </div>
   );

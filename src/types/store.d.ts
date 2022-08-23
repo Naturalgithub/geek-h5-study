@@ -20,6 +20,8 @@ export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 export type LoginAction = {
   type: 'login/login',
   payload: Token
+} | {
+  type:'login/logout'
 }
 
 // 各个默认的Action - 登陆模块
