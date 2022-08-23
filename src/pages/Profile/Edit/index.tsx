@@ -1,14 +1,17 @@
-import { getUserProfile } from "@/store/actions/profile";
+import { getUserProfile, updateUserProfile } from "@/store/actions/profile";
 import { useInitialState } from "@/utils/hooks";
-import { List, NavBar, Popup } from "antd-mobile";
+import { List, NavBar, Popup, Toast } from "antd-mobile";
 import classNames from "classnames";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import EditInput from "./components/EditInput";
 import styles from "./index.module.scss";
 
 export default function Edit() {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   // 控制显示隐藏
   const [showInput, setShowInput] = useState<{
     visible: boolean;
@@ -18,6 +21,27 @@ export default function Edit() {
   const { userProfile } = useInitialState(getUserProfile, "profile");
 
   const Item = List.Item;
+
+  // 关闭弹窗的方法
+  const hideInput = () => {
+    setShowInput({
+      type: "",
+      visible: false,
+    });
+  };
+
+  // 修改昵称和简介
+  const onUpdate = async (key: string, value: string) => {
+    await dispatch(updateUserProfile(key, value));
+
+    Toast.show({
+      content: "修改成功",
+      icon: "success",
+    });
+
+    // 关闭弹窗
+    hideInput();
+  };
   return (
     <div className={styles.root}>
       <div className="content">
@@ -78,6 +102,7 @@ export default function Edit() {
         >
           <EditInput
             type={showInput.type}
+            onUpdate={onUpdate}
             hideInput={() => {
               setShowInput({ type: "", visible: false });
             }}
