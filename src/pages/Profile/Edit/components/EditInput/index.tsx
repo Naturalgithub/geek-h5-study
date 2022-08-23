@@ -1,4 +1,7 @@
+import { RootState } from "@/types/store";
 import { Input, NavBar, TextArea } from "antd-mobile";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 
 type Props = {
@@ -7,6 +10,12 @@ type Props = {
 };
 
 export default function EditInput({ hideInput, type }: Props) {
+  const { userProfile } = useSelector((state: RootState) => state.profile);
+
+  const [value, setValue] = useState(
+    type === "name" ? userProfile.name : userProfile.intro
+  );
+
   return (
     <div className={styles.root}>
       <NavBar
@@ -22,7 +31,11 @@ export default function EditInput({ hideInput, type }: Props) {
 
         {type === "name" ? (
           <div className="input-wrap">
-            <Input placeholder="请输入昵称" />
+            <Input
+              placeholder="请输入昵称"
+              value={value}
+              onChange={(e) => setValue(e)}
+            />
           </div>
         ) : (
           <TextArea
@@ -30,6 +43,8 @@ export default function EditInput({ hideInput, type }: Props) {
             placeholder="请输入简介"
             showCount
             maxLength={99}
+            value={value}
+            onChange={(e) => setValue(e)}
           />
         )}
       </div>

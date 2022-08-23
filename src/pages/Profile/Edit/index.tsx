@@ -54,7 +54,7 @@ export default function Edit() {
                   {userProfile.intro || "未填写"}
                 </span>
               }
-              onClick={() => setShowInput({ type: "name", visible: true })}
+              onClick={() => setShowInput({ type: "intro", visible: true })}
             >
               简介
             </Item>
@@ -74,6 +74,7 @@ export default function Edit() {
           visible={showInput.visible}
           position="right"
           bodyStyle={{ width: "100vw" }}
+          destroyOnClose
         >
           <EditInput
             type={showInput.type}
