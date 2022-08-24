@@ -1,17 +1,18 @@
 import "./App.scss";
 
 // 导入路由
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-
+import { Redirect, Route, Router } from "react-router-dom";
+// 单独路由管理
 // 蹈入组件
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import Chat from "./pages/Profile/Chat";
 import ProfileEdit from "./pages/Profile/Edit";
+import history from "./utils/history";
 
 function App() {
   return (
-    <Router>
+    <Router history={history}>
       <div className="app">
         <Route
           exact

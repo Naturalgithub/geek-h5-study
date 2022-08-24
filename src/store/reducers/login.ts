@@ -11,7 +11,7 @@ const login = (state = initialState, action: LoginAction): Token => {
       return {
         ...initialState,  // 这是个冗余操作，保持习惯，后面用immer produce就好了
         token: '',
-        refresh_Token:''
+        refresh_token:''
       }
     default:
       return state

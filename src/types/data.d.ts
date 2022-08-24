@@ -10,7 +10,7 @@ export type ApiResponse<T> = {
 // token类型
 export type Token = {
   token: string
-  refresh_Token: string
+  refresh_token: string
 }
 
 // 我的 - 个人信息

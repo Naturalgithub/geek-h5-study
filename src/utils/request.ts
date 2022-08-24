@@ -48,36 +48,39 @@ request.interceptors.response.use(
 
     // 1. 判断是否401错误
     if (error.response.status === 401) {
+      
       // 2. 401错误 没有token token过期了
       const token = getToken()
-
-      if (token.token && token.refresh_Token) {
+        
+      if (token.token && token.refresh_token) {
         try {
           // 3.有token token过期，尝试去刷新token，注意需要使用原始的axios来刷新
           const res = await request2({
             url: '/authorizations',
             method: 'put',
             headers: {
-              Authorization: `Bearer ${token.refresh_Token}`,
+              Authorization: `Bearer ${token.refresh_token}`,
             },
           })
-
+          
           // 4. 刷新token成功，将新的token保存在redux中
           store.dispatch({
             type: 'login/login',
             payload: {
               token: res.data.data.token,
-              refresh_Token:token.refresh_Token
+              refresh_token:token.refresh_token
             }
           })
 
           // 5. 将token保存在宿主环境中
           setToken({
             token: res.data.data.token,
-            refresh_Token:token.refresh_Token
+            refresh_token:token.refresh_token
           })
+          
           // Token已经没问题了,重新发送请求
           return request(error.config)
+          
         } catch (error) {
           // 刷新失败
           // 1. 移除token
@@ -85,6 +88,7 @@ request.interceptors.response.use(
           // 2. 跳转到登录页
           // window.location.href = '/login'
           history.replace('/login', { from: history.location.pathname })
+          Toast.show('登陆过期，请重新登陆')
         }
       }
 
