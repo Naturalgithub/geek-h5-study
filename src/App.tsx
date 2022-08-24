@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 // 蹈入组件
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
+import Chat from "./pages/Profile/Chat";
 import ProfileEdit from "./pages/Profile/Edit";
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
         <Route path="/login" component={Login}></Route>
         <Route path="/profile/edit">
           <ProfileEdit />
+        </Route>
+        <Route path="/chat">
+          <Chat />
         </Route>
       </div>
     </Router>
