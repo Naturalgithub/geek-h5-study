@@ -1,4 +1,4 @@
-import { Token, User, UserProfile } from './data.d';
+import { Channel, Token, User, UserProfile } from './data.d';
 // 存放和redux相关的所有类型
 // RootState
 // RootAction
@@ -11,7 +11,7 @@ import { ThunkAction } from 'redux-thunk';
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>
 // 所有的Action的类型
-export type RootAction = LoginAction | ProfileAction
+export type RootAction = LoginAction | ProfileAction | HomeAction
 // thunkAction类型
 
 export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
@@ -24,11 +24,17 @@ export type LoginAction = {
   type:'login/logout'
 }
 
-// 各个默认的Action - 登陆模块
+// 各个默认的Action - 个人中心模块
 export type ProfileAction = {
   type: 'profile/getUser'
   payload: User
 } | {
   type: 'profile/getUserProfile'
   payload: UserProfile
+}
+
+// 各个默认的Action - 首页模块
+export type HomeAction = {
+  type: 'home/saveUserChannels'
+  payload:Channel[]
 }

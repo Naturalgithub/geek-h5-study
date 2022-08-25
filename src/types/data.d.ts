@@ -34,3 +34,9 @@ export type UserProfile = {
   birthday: string
   intro: string
 }
+
+// 频道列表单条数据
+export type Channel = {
+  id: number
+  name: string
+}
