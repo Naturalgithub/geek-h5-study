@@ -1,9 +1,11 @@
-import { Token } from "@/types/data"
+import { Token } from "@/types/data";
+import { Channel } from './../types/data.d';
 
 /**
  * @description: 本地存储封装
  */
 const TOKEN_KEY = 'geek-h5-study-token'
+const CHANNEL_KEY= 'geek-h5-study-channel'
 
 /**
  * @description: 保存token
@@ -37,4 +39,21 @@ export function removeToken() {
  */
 export function hasToken() {
   return !!getToken().token
+}
+
+/**
+ * @description: 保存频道数据
+ * @param {Channel} channels
+ * @return {*}
+ */
+export function setChannels(channels: Channel[]) {
+  localStorage.setItem(CHANNEL_KEY,JSON.stringify(channels))
+}
+
+/**
+ * @description: 获取频道数据
+ * @return {*}
+ */
+export function getChannels() {
+  return JSON.parse(localStorage.getItem(CHANNEL_KEY)|| '[]')
 }
