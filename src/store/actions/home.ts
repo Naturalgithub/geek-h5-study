@@ -10,14 +10,6 @@ import { RootThunkAction } from './../../types/store.d';
  */
 export const getUserChannel = (): RootThunkAction => {
   return async dispatch => {
-    // const res = await request.get<ApiResponse<{ channels: Channel[] }>>('/user/channels')
-    // console.log('actios频道',res.data.data)
-    // const {channels} = res.data.data
-    // dispatch({
-    //   type: 'home/saveUserChannels',
-    //   payload:channels
-    // })
-
     // 获取网络数据直接存在redux
     const getServerData = async () => {
       const res = await request.get<ApiResponse<{ channels: Channel[] }>>('/user/channels')
@@ -46,8 +38,22 @@ export const getUserChannel = (): RootThunkAction => {
         getServerData()
         setChannels((await getServerData()).data.data.channels)
       }
-
     }
+  }
+}
+
+/**
+ * @description: 获取所有频道数据
+ * @return {*}
+ */
+export function getAllChannel(): RootThunkAction {
+
+  return async dispatch => {
+    const res = await request.get<ApiResponse<{ channels: Channel[] }>>('/channels')
+    dispatch({
+      type: 'home/saveAllChannels',
+      payload: res.data.data.channels
+    })
 
   }
 }

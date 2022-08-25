@@ -21,7 +21,7 @@ export type LoginAction = {
   type: 'login/login',
   payload: Token
 } | {
-  type:'login/logout'
+  type: 'login/logout'
 }
 
 // 各个默认的Action - 个人中心模块
@@ -36,5 +36,8 @@ export type ProfileAction = {
 // 各个默认的Action - 首页模块
 export type HomeAction = {
   type: 'home/saveUserChannels'
-  payload:Channel[]
+  payload: Channel[]
+} | {
+  type: 'home/saveAllChannels'
+  payload: Channel[]
 }
