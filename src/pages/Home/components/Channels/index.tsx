@@ -1,7 +1,7 @@
 import classnames from "classnames";
 
 import Icon from "@/components/Icon";
-import { addChannel, changeActive } from "@/store/actions/home";
+import { addChannel, changeActive, delChannel } from "@/store/actions/channel";
 import { Channel } from "@/types/data";
 import { RootState } from "@/types/store";
 import { differenceBy } from "lodash";
@@ -19,12 +19,12 @@ type Props = {
 const Channels = ({ hide }: Props) => {
   const dispatch = useDispatch();
   const { userChannels, allChannels } = useSelector(
-    (state: RootState) => state.home
+    (state: RootState) => state.channel
   );
   const optionChannels = differenceBy(allChannels, userChannels, "id");
 
   // 高亮
-  const { active } = useSelector((state: RootState) => state.home);
+  const { active } = useSelector((state: RootState) => state.channel);
 
   const changeHomeActive = (id: number) => {
     dispatch(changeActive(id));
@@ -78,7 +78,16 @@ const Channels = ({ hide }: Props) => {
                   key={item.id}
                 >
                   {item.name}
-                  {isEdit ? <Icon type="iconbtn_tag_close" /> : ""}
+                  {isEdit ? (
+                    <Icon
+                      type="iconbtn_tag_close"
+                      onClick={() => {
+                        dispatch(delChannel(item));
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </span>
               );
             })}

@@ -16,3 +16,4 @@
   react_devtools_backend.js:4026 Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: 
 
 3. git 443 关掉vpn重试就好了
+4. 优化： 把channel从home剥离出来

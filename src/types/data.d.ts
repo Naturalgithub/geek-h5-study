@@ -40,3 +40,19 @@ export type Channel = {
   id: number
   name: string
 }
+
+
+// 定义频道的数据列星
+export type Article = {
+  art_id: string
+  title: string
+  aut_id: string
+  comm_count: number
+  pubdate: string
+  aut_name: string
+  is_top: number
+  cover: {
+    type: 0 | 1 | 3
+    images: string[]
+  }
+}

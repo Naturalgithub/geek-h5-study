@@ -3,23 +3,24 @@ import {
   changeActive,
   getAllChannel,
   getUserChannel,
-} from "@/store/actions/home";
+} from "@/store/actions/channel";
 import { RootState } from "@/types/store";
 import { useInitialState } from "@/utils/hooks";
 import { Popup } from "antd-mobile";
 import Tabs from "antd-mobile/es/components/tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ArticleList from "./components/ArticleList";
 import Channels from "./components/Channels";
 
 import styles from "./index.module.scss";
 
 const Home = () => {
-  const { userChannels } = useInitialState(getUserChannel, "home");
-  useInitialState(getAllChannel, "home");
+  const { userChannels } = useInitialState(getUserChannel, "channel");
+  useInitialState(getAllChannel, "channel");
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
-  const { active } = useSelector((state: RootState) => state.home);
+  const { active } = useSelector((state: RootState) => state.channel);
 
   const hide = () => {
     setVisible(false);
@@ -38,7 +39,8 @@ const Home = () => {
       <Tabs className="tabs" activeKey={active + ""} onChange={onChange}>
         {userChannels.map((item) => (
           <Tabs.Tab title={item.name} key={item.id}>
-            {item.name}的内容
+            {/* 在每个 Tabs.TabPane 中渲染文章列表组件 */}
+            <ArticleList channelId={item.id} />
           </Tabs.Tab>
         ))}
       </Tabs>

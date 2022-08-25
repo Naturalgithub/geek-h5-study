@@ -11,7 +11,7 @@ import { ThunkAction } from 'redux-thunk';
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>
 // 所有的Action的类型
-export type RootAction = LoginAction | ProfileAction | HomeAction
+export type RootAction = LoginAction | ProfileAction | ChannelAction | HomeAction
 // thunkAction类型
 
 export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
@@ -33,14 +33,18 @@ export type ProfileAction = {
   payload: UserProfile
 }
 
-// 各个默认的Action - 首页模块
-export type HomeAction = {
-  type: 'home/saveUserChannels'
+// 各个默认的Action - 首页模块-channel
+export type ChannelAction = {
+  type: 'channel/saveUserChannels'
   payload: Channel[]
 } | {
-  type: 'home/saveAllChannels'
+  type: 'channel/saveAllChannels'
   payload: Channel[]
 } | {
-  type: 'home/changeActive'
+  type: 'channel/changeActive'
   payload: number
+}
+
+export type HomeAction = {
+
 }
