@@ -1,9 +1,11 @@
 import classnames from "classnames";
 
 import Icon from "@/components/Icon";
+import { addChannel, changeActive } from "@/store/actions/home";
+import { Channel } from "@/types/data";
 import { RootState } from "@/types/store";
 import { differenceBy } from "lodash";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./index.module.scss";
 
 type Props = {
@@ -14,10 +16,27 @@ type Props = {
 // 因此，可以拿到所有频道数据，然后，排除掉我的频道数据，剩下的就是频道推荐数据了。
 
 const Channels = ({ hide }: Props) => {
+  const dispatch = useDispatch();
   const { userChannels, allChannels } = useSelector(
     (state: RootState) => state.home
   );
   const optionChannels = differenceBy(allChannels, userChannels, "id");
+
+  // 高亮
+  const { active } = useSelector((state: RootState) => state.home);
+
+  const changeHomeActive = (id: number) => {
+    dispatch(changeActive(id));
+  };
+
+  /**
+   * @description: 添加频道
+   * @param {Channel} channel
+   * @return {*}
+   */
+  const onAddChannel = (channel: Channel) => {
+    dispatch(addChannel(channel));
+  };
 
   return (
     <div className={styles.root}>
@@ -36,7 +55,14 @@ const Channels = ({ hide }: Props) => {
             {/* 选中时，添加类名 selected */}
             {userChannels.map((item) => {
               return (
-                <span className={classnames("channel-list-item")} key={item.id}>
+                <span
+                  className={classnames([
+                    "channel-list-item",
+                    active === item.id ? "selected" : null,
+                  ])}
+                  onClick={() => changeHomeActive(item.id)}
+                  key={item.id}
+                >
                   {item.name}
                   <Icon type="iconbtn_tag_close" />
                 </span>
@@ -53,7 +79,15 @@ const Channels = ({ hide }: Props) => {
 
           <div className="channel-list">
             {optionChannels.map((item) => {
-              return <span className="channel-list-item">+ {item.name}</span>;
+              return (
+                <span
+                  className="channel-list-item"
+                  key={item.id}
+                  onClick={() => onAddChannel(item)}
+                >
+                  + {item.name}
+                </span>
+              );
             })}
           </div>
         </div>

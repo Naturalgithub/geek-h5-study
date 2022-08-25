@@ -40,4 +40,7 @@ export type HomeAction = {
 } | {
   type: 'home/saveAllChannels'
   payload: Channel[]
+} | {
+  type: 'home/changeActive'
+  payload: number
 }

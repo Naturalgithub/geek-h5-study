@@ -4,11 +4,13 @@ import { HomeAction } from './../../types/store.d';
 type HomeType = {
   userChannels: Channel[]
   allChannels: Channel[]
+  active: number
 }
 
 const initialState: HomeType = {
   userChannels: [],
-  allChannels: []
+  allChannels: [],
+  active: 0 // 默认高亮
 }
 
 export default function home(state = initialState, action: HomeAction) {
@@ -19,11 +21,19 @@ export default function home(state = initialState, action: HomeAction) {
         ...state,
         userChannels: action.payload
       }
+
     case 'home/saveAllChannels':
       return {
         ...state,
         allChannels: action.payload
       }
+
+    case 'home/changeActive':
+      return {
+        ...state,
+        active: action.payload
+      }
+
     default:
       return state
   }

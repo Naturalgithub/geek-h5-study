@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { getChannels, hasToken, setChannels } from '@/utils/storage';
 import { ApiResponse, Channel } from './../../types/data.d';
-import { RootThunkAction } from './../../types/store.d';
+import { HomeAction, RootThunkAction } from './../../types/store.d';
 
 /**
  * @description: 获取用户channels
@@ -54,6 +54,45 @@ export function getAllChannel(): RootThunkAction {
       type: 'home/saveAllChannels',
       payload: res.data.data.channels
     })
+  }
+}
 
+/**
+ * @description: 修改高亮
+ * @param {number} payload 是id
+ * @return {*}
+ */
+export function changeActive(payload: number): HomeAction {
+  return {
+    type: 'home/changeActive',
+    payload
+  }
+}
+
+/**
+ * @description: 添加频道
+ * @param {Channel} channel
+ * @return {*}
+ */
+export function addChannel(channel: Channel): RootThunkAction {
+
+  return async (dispatch, getState) => {
+    const { userChannels } = getState().home
+
+    if (hasToken()) {
+      // 如果登陆了，发送请求获取频道信息
+      await request.patch('/user/channels', {
+        channels: [channel],
+      })
+    } else {
+      // 如果没有登录，将频道数据保存到本地
+      // 将channels数据保存本地
+      setChannels([...userChannels, channel])
+    }
+
+    dispatch({
+      type: 'home/saveUserChannels',
+      payload: [...userChannels, channel],
+    })
   }
 }
