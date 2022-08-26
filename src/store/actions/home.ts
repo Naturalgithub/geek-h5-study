@@ -1,6 +1,8 @@
 import request from '@/utils/request';
 import { ApiResponse, Article } from './../../types/data.d';
 import { RootThunkAction } from './../../types/store.d';
+
+
 export function getArticleList(channel_id: number, timestamp: string): RootThunkAction {
   return async dispatch => {
     const res = await request.get<ApiResponse<{
@@ -13,6 +15,14 @@ export function getArticleList(channel_id: number, timestamp: string): RootThunk
       }
     })
 
+    dispatch({
+      type: 'home/getArticleList',
+      payload: {
+        timestamp: +res.data.data.pre_timestamp,
+        channel_id,
+        results: res.data.data.results
+      }
+    })
     console.log('获取文章', res)
   }
 

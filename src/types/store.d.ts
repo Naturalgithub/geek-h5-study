@@ -1,4 +1,4 @@
-import { Channel, Token, User, UserProfile } from './data.d';
+import { Article, Channel, Token, User, UserProfile } from './data.d';
 // 存放和redux相关的所有类型
 // RootState
 // RootAction
@@ -46,5 +46,10 @@ export type ChannelAction = {
 }
 
 export type HomeAction = {
-
+  type: 'home/getArticleList'
+  payload: {
+    timestamp: number
+    channel_id: number
+    results: Article[]
+  }
 }

@@ -2,6 +2,7 @@ import classnames from "classnames";
 
 import Icon from "@/components/Icon";
 
+import { Article } from "@/types/data";
 import styles from "./index.module.scss";
 
 type Props = {
@@ -11,33 +12,40 @@ type Props = {
    * 3 表示三图
    */
   type?: 0 | 1 | 3;
+  article: Article;
 };
 
-const ArticleItem = ({ type = 0 }: Props) => {
+const ArticleItem = ({ article }: Props) => {
+  const {
+    title,
+    cover: { type, images },
+    aut_name,
+    comm_count,
+  } = article;
+
   return (
     <div className={styles.root}>
       <div
         className={classnames(
           "article-content",
-          type === 3 && "t3",
+          (type === 1 || type === 3) && "t3",
           type === 0 && "none-mt"
         )}
       >
-        <h3>Vue响应式----数据响应式原理</h3>
+        <h3>{title}</h3>
         {type !== 0 && (
           <div className="article-imgs">
-            <div className="article-img-wrapper">
-              <img
-                src="http://geek.itheima.net/resources/images/63.jpg"
-                alt=""
-              />
-            </div>
+            {images.map((image, index) => (
+              <div key={index} className="article-img-wrapper">
+                <img src={image} alt="" />
+              </div>
+            ))}
           </div>
         )}
       </div>
       <div className={classnames("article-info", type === 0 && "none-mt")}>
-        <span>黑马先锋</span>
-        <span>99 评论</span>
+        <span>{aut_name}</span>
+        <span>{comm_count} 评论</span>
         <span>2 天前</span>
         <span className="close">
           <Icon type="iconbtn_essay_close" />
