@@ -1,4 +1,4 @@
-import { Article, Channel, Token, User, UserProfile } from './data.d';
+import { Article, Channel, Suggestion, Token, User, UserProfile } from './data.d';
 // 存放和redux相关的所有类型
 // RootState
 // RootAction
@@ -11,7 +11,7 @@ import { ThunkAction } from 'redux-thunk';
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>
 // 所有的Action的类型
-export type RootAction = LoginAction | ProfileAction | ChannelAction | HomeAction
+export type RootAction = LoginAction | ProfileAction | ChannelAction | HomeAction | SearchAction | ArticleAction
 // thunkAction类型
 
 export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
@@ -59,4 +59,14 @@ export type HomeAction = {
     timestamp: number
     results: Article[]
   }
+}
+
+export type SearchAction = {
+  type: 'search/suggestion',
+  payload: Suggestion
+}
+
+export type ArticleAction = {
+  type: 'article/setArticleInfo'
+  payload: ArticleDetail
 }
