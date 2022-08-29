@@ -5,6 +5,14 @@ import Icon from "@/components/Icon";
 import { Article } from "@/types/data";
 import styles from "./index.module.scss";
 
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.locale("zh-cn");
+// 使用插件。固定格式dayjs.extend(插件)
+dayjs.extend(relativeTime);
+
 type Props = {
   /**
    * 0 表示无图
@@ -20,6 +28,7 @@ const ArticleItem = ({ article }: Props) => {
     title,
     cover: { type, images },
     aut_name,
+    pubdate,
     comm_count,
   } = article;
 
@@ -46,7 +55,7 @@ const ArticleItem = ({ article }: Props) => {
       <div className={classnames("article-info", type === 0 && "none-mt")}>
         <span>{aut_name}</span>
         <span>{comm_count} 评论</span>
-        <span>2 天前</span>
+        <span>{dayjs(pubdate).fromNow()}</span>
         <span className="close">
           <Icon type="iconbtn_essay_close" />
         </span>

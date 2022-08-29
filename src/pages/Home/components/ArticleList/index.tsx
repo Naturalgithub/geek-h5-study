@@ -1,6 +1,6 @@
 import { getArticleList } from "@/store/actions/home";
 import { RootState } from "@/types/store";
-import { useEffect } from "react";
+import { InfiniteScroll } from "antd-mobile";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleItem from "../ArticleItem";
 
@@ -13,18 +13,23 @@ type Props = {
 const ArticleList = ({ channelId }: Props) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getArticleList(channelId, Date.now + ""));
-  }, [dispatch, channelId]);
-
   // 获取redux中的文章
-  const { articles } = useSelector((state: RootState) => state.home);
+  const {
+    home: { articles },
+  } = useSelector((state: RootState) => state);
 
-  const { results = [] } = articles[channelId] || {};
+  const { results = [], timestamp } = articles[channelId] || {};
+
+  const hasMore = timestamp !== null && results.length <= 100;
+
+  // 进来会先执行一次 必须返回一个Promise对象
+  const loadMore = async () => {
+    await dispatch(getArticleList(channelId, timestamp || Date.now()));
+  };
+
   return (
     <div className={styles.root}>
       {/* 文章列表中的每一项 */}
-
       {results.map((item) => {
         return (
           <div className="article-item" key={item.art_id}>
@@ -32,6 +37,9 @@ const ArticleList = ({ channelId }: Props) => {
           </div>
         );
       })}
+
+      {/* 无限加载组件 */}
+      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </div>
   );
 };

@@ -17,3 +17,4 @@
 
 3. git 443 关掉vpn重试就好了
 4. 优化： 把channel从home剥离出来
+5. redux 用点语法return state useSelector 不更新 建议用 produce方法管理reducer 一劳永逸

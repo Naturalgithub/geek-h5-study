@@ -16,8 +16,15 @@ const homeState = {
 export default function home(state = homeState, action: HomeAction): HomeStateType {
   switch (action.type) {
     case 'home/getArticleList':
-      state.articles[action.payload.channel_id] = action.payload
-      return state
+      const newState = { ...state }
+      // newState.articles[action.payload.channel_id] = action.payload
+      // 需要在原来的基础上追加results数据
+      const old = newState.articles[action.payload.channel_id]?.results ?? []
+      newState.articles[action.payload.channel_id] = {
+        timestamp: action.payload.timestamp,
+        results: [...old, ...action.payload.results]
+      }
+      return newState
 
     default:
       return state

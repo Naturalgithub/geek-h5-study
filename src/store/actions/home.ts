@@ -3,7 +3,7 @@ import { ApiResponse, Article } from './../../types/data.d';
 import { RootThunkAction } from './../../types/store.d';
 
 
-export function getArticleList(channel_id: number, timestamp: string): RootThunkAction {
+export function getArticleList(channel_id: number, timestamp: number): RootThunkAction {
   return async dispatch => {
     const res = await request.get<ApiResponse<{
       pre_timestamp: string
