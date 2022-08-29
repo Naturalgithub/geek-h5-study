@@ -7,6 +7,9 @@ import Icon from "@/components/Icon";
 import { getArticleInfo } from "@/store/actions/article";
 import { RootState } from "@/types/store";
 import dayjs from "dayjs";
+import DOMPurify from "dompurify";
+import hljs from "highlight.js";
+import "highlight.js/styles/vs2015.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommentFooter from "./components/CommentFooter";
@@ -25,6 +28,20 @@ const Article = () => {
   }, [dispatch, articleId]);
 
   const { info } = useSelector((state: RootState) => state.article);
+
+  useEffect(() => {
+    // 配置 highlight.js
+    hljs.configure({
+      // 忽略未经转义的 HTML 字符
+      ignoreUnescapedHTML: true,
+    });
+    // 获取到内容中所有的code标签
+    const codes = document.querySelectorAll(".dg-html pre ");
+    codes.forEach((el) => {
+      // 让code进行高亮
+      hljs.highlightElement(el as HTMLElement);
+    });
+  }, [info]);
 
   const renderArticle = () => {
     // 文章详情
@@ -49,14 +66,16 @@ const Article = () => {
                   info.is_followed ? "followed" : ""
                 )}
               >
-                {true ? "已关注" : "关注"}
+                {info.is_followed ? "已关注" : "关注"}
               </span>
             </div>
           </div>
           <div className="content">
             <div
               className="content-html dg-html"
-              dangerouslySetInnerHTML={{ __html: info.content }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(info.content || ""),
+              }}
             />
             <div className="date">
               发布文章时间：{dayjs(info.pubdate).format("YYYY-MM-DD")}
@@ -99,9 +118,14 @@ const Article = () => {
           {true && (
             <div className="nav-author">
               <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
-              <span className="name">黑马先锋</span>
-              <span className={classNames("follow", true ? "followed" : "")}>
-                {true ? "已关注" : "关注"}
+              <span className="name">{info.is_followed}</span>
+              <span
+                className={classNames(
+                  "follow",
+                  info.is_followed ? "followed" : ""
+                )}
+              >
+                {info.is_followed ? "已关注" : "关注"}
               </span>
             </div>
           )}
