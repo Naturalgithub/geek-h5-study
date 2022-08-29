@@ -1,6 +1,6 @@
-import { getArticleList } from "@/store/actions/home";
+import { getArticleList, getNewList } from "@/store/actions/home";
 import { RootState } from "@/types/store";
-import { InfiniteScroll } from "antd-mobile";
+import { InfiniteScroll, PullToRefresh } from "antd-mobile";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleItem from "../ArticleItem";
 
@@ -27,19 +27,28 @@ const ArticleList = ({ channelId }: Props) => {
     await dispatch(getArticleList(channelId, timestamp || Date.now()));
   };
 
+  // 下拉刷新
+  const onRefresh = async () => {
+    // 重置当前频道的数据，重新加载第一页的数据
+    console.log("刷新了");
+    dispatch(getNewList(channelId, Date.now()));
+  };
+
   return (
     <div className={styles.root}>
       {/* 文章列表中的每一项 */}
-      {results.map((item) => {
-        return (
-          <div className="article-item" key={item.art_id}>
-            <ArticleItem article={item} />
-          </div>
-        );
-      })}
+      <PullToRefresh onRefresh={onRefresh}>
+        {results.map((item) => {
+          return (
+            <div className="article-item" key={item.art_id}>
+              <ArticleItem article={item} />
+            </div>
+          );
+        })}
 
-      {/* 无限加载组件 */}
-      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+        {/* 无限加载组件 */}
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      </PullToRefresh>
     </div>
   );
 };

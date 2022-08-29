@@ -26,6 +26,11 @@ export default function home(state = homeState, action: HomeAction): HomeStateTy
       }
       return newState
 
+    case 'home/saveNewArticles':
+      const newStateTmp = { ...state }
+      newStateTmp.articles[action.payload.channel_id] = action.payload
+      return newStateTmp
+
     default:
       return state
   }

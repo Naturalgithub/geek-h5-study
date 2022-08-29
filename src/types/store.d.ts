@@ -52,4 +52,11 @@ export type HomeAction = {
     channel_id: number
     results: Article[]
   }
+} | {
+  type: 'home/saveNewArticles'
+  payload: {
+    channel_id: number
+    timestamp: number
+    results: Article[]
+  }
 }
