@@ -8,6 +8,7 @@ import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Img from "@/components/Img";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.locale("zh-cn");
 // 使用插件。固定格式dayjs.extend(插件)
@@ -46,7 +47,7 @@ const ArticleItem = ({ article }: Props) => {
           <div className="article-imgs">
             {images.map((image, index) => (
               <div key={index} className="article-img-wrapper">
-                <img src={image} alt="" />
+                <Img src={image} />
               </div>
             ))}
           </div>
