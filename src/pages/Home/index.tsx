@@ -10,6 +10,7 @@ import { Popup } from "antd-mobile";
 import Tabs from "antd-mobile/es/components/tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ArticleList from "./components/ArticleList";
 import Channels from "./components/Channels";
 
@@ -21,6 +22,7 @@ const Home = () => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const { active } = useSelector((state: RootState) => state.channel);
+  const history = useHistory();
 
   const hide = () => {
     setVisible(false);
@@ -46,7 +48,7 @@ const Home = () => {
       </Tabs>
       {/* 搜索按钮*/}
       <div className="tabs-opration">
-        <Icon type="iconbtn_search" />
+        <Icon type="iconbtn_search" onClick={() => history.push("/search")} />
         <Icon type="iconbtn_channel" onClick={show} />
       </div>
       {/* // 渲染频道弹层 */}

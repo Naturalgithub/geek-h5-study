@@ -2,6 +2,7 @@ import { getArticleList, getNewList } from "@/store/actions/home";
 import { RootState } from "@/types/store";
 import { InfiniteScroll, PullToRefresh } from "antd-mobile";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ArticleItem from "../ArticleItem";
 
 import styles from "./index.module.scss";
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const ArticleList = ({ channelId }: Props) => {
+  const histroy = useHistory();
   const dispatch = useDispatch();
 
   // 获取redux中的文章
@@ -40,7 +42,11 @@ const ArticleList = ({ channelId }: Props) => {
       <PullToRefresh onRefresh={onRefresh}>
         {results.map((item) => {
           return (
-            <div className="article-item" key={item.art_id}>
+            <div
+              className="article-item"
+              key={item.art_id}
+              onClick={() => histroy.push(`/article/${item.art_id}`)}
+            >
               <ArticleItem article={item} />
             </div>
           );
