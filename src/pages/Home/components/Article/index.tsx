@@ -79,8 +79,10 @@ const Article = () => {
   // );
 
   // 获取评论数据
+  // total_count = -1,
+  // TODO
   const {
-    comment: { results = [], total_count = -1, last_id, end_id = "" },
+    comment: { results = [], last_id, end_id = "" },
   } = useSelector((state: RootState) => state.article);
   const hasMore = last_id !== end_id;
 

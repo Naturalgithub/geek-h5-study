@@ -1,5 +1,7 @@
 import Icon from "@/components/Icon";
+import { collectArticle, likeArticle } from "@/store/actions/article";
 import { ArticleDetail } from "@/types/data";
+import { useDispatch } from "react-redux";
 import styles from "./index.module.scss";
 
 type Props = {
@@ -10,6 +12,18 @@ type Props = {
 };
 
 const CommentFooter = ({ type = "normal", info }: Props) => {
+  const dispatch = useDispatch();
+
+  // 点赞文章
+  const onLike = () => {
+    dispatch(likeArticle(info.art_id, info.attitude));
+  };
+
+  // 收藏文章
+  const onCollect = () => {
+    dispatch(collectArticle(info.art_id, info.is_collected));
+  };
+
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -26,11 +40,13 @@ const CommentFooter = ({ type = "normal", info }: Props) => {
               <span className="bage">{info.comm_count}</span>
             )}
           </div>
-          <div className="action-item">
-            <Icon type={info.attitude ? "iconbtn_like_sel" : "iconbtn_like2"} />
+          <div className="action-item" onClick={onLike}>
+            <Icon
+              type={info.attitude === 1 ? "iconbtn_like_sel" : "iconbtn_like2"}
+            />
             <p>点赞</p>
           </div>
-          <div className="action-item">
+          <div className="action-item" onClick={onCollect}>
             <Icon
               type={
                 info.is_collected ? "iconbtn_collect_sel" : "iconbtn_collect"
@@ -43,7 +59,7 @@ const CommentFooter = ({ type = "normal", info }: Props) => {
 
       {type === "reply" && (
         <div className="action-item">
-          <Icon type={true ? "iconbtn_like_sel" : "iconbtn_like2"} />
+          <Icon type={info.attitude ? "iconbtn_like_sel" : "iconbtn_like2"} />
           <p>点赞</p>
         </div>
       )}

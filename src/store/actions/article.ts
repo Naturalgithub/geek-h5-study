@@ -40,3 +40,42 @@ export function getCommentList(article_id: string, offset?: string): RootThunkAc
     })
   }
 }
+
+/**
+ * @description: 点赞文章
+ * @param {string} id
+ * @param {number} attitud
+ * @return {*}
+ */
+export function likeArticle(id: string, attitud: number): RootThunkAction {
+  return async dispatch => {
+    if (attitud === 1) {
+      // 取消点赞
+      await request.delete('/article/likings/' + id)
+    } else {
+      // 点赞
+      await request.post('/article/likings', { target: id })
+    }
+    // 更新
+    await dispatch(getArticleInfo(id))
+  }
+}
+
+export function collectArticle(id: string, is_collected: boolean): RootThunkAction {
+
+  return async dispatch => {
+    if (is_collected) {
+      // 取消收藏
+      await request.delete('/article/collections/' + id)
+    } else {
+      // 收藏
+      await request.post('/article/collections', {
+        target: id
+      })
+    }
+
+    // 更细
+    await dispatch(getArticleInfo(id))
+
+  }
+}
