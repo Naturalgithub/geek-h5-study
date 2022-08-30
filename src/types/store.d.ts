@@ -69,4 +69,7 @@ export type SearchAction = {
 export type ArticleAction = {
   type: 'article/setArticleInfo'
   payload: ArticleDetail
+} | {
+  type: 'article/saveComment'
+  payload: CommentRes
 }

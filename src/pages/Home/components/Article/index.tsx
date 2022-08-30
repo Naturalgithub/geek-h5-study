@@ -4,8 +4,9 @@ import { useHistory, useParams } from "react-router-dom";
 import styles from "./index.module.scss";
 
 import Icon from "@/components/Icon";
-import { getArticleInfo } from "@/store/actions/article";
+import { getArticleInfo, getCommentList } from "@/store/actions/article";
 import { RootState } from "@/types/store";
+import { useInitialState } from "@/utils/hooks";
 import dayjs from "dayjs";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
@@ -71,6 +72,9 @@ const Article = () => {
       warpDOM.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+  // 组件中发送请求
+  useInitialState(() => getCommentList(Params.id), "article");
 
   const renderArticle = () => {
     // 文章详情
