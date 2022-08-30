@@ -74,7 +74,10 @@ const Article = () => {
   }, []);
 
   // 组件中发送请求
-  useInitialState(() => getCommentList(Params.id), "article");
+  const { comment } = useInitialState(
+    () => getCommentList(Params.id),
+    "article"
+  );
 
   const renderArticle = () => {
     // 文章详情
@@ -123,8 +126,17 @@ const Article = () => {
           </div>
 
           <div className="comment-list">
-            <CommentItem />
-
+            {info.comm_count === 0 ? (
+              <h3>暂无评论</h3>
+            ) : (
+              comment.results?.map((item) => (
+                <CommentItem
+                  key={item.com_id}
+                  type="normal"
+                  comment={item}
+                ></CommentItem>
+              ))
+            )}
             <InfiniteScroll
               hasMore={false}
               loadMore={async () => {
