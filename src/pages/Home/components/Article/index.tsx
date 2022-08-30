@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/vs2015.css";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommentFooter from "./components/CommentFooter";
 import CommentItem from "./components/CommentItem";
@@ -43,10 +43,39 @@ const Article = () => {
     });
   }, [info]);
 
+  // 导航栏的显示与隐藏
+  // 为顶部导航栏添加作者信息
+  // 是否显示顶部信息
+  const [isShowAuthor, setIsShowAuthor] = useState(false);
+  const authorRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // 控制显示隐藏逻辑
+  useEffect(() => {
+    const warpDOM = wrapRef.current!;
+    const authDOM = authorRef.current!;
+
+    // getBoundingClientRect 返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合, 即：是与该元素相关的CSS 边框集合。
+    // https://juejin.cn/post/6844903888902963213
+    const onScroll = function () {
+      const rect = authDOM.getBoundingClientRect()!;
+
+      if (rect.top <= 0) {
+        setIsShowAuthor(true);
+      } else {
+        setIsShowAuthor(false);
+      }
+    };
+    warpDOM.addEventListener("scroll", onScroll);
+    return () => {
+      warpDOM.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   const renderArticle = () => {
     // 文章详情
     return (
-      <div className="wrapper">
+      <div className="wrapper" ref={wrapRef}>
         <div className="article-wrapper">
           <div className="header">
             <h1 className="title">{info.title}</h1>
@@ -57,7 +86,7 @@ const Article = () => {
               <span>{info.comm_count} 评论</span>
             </div>
 
-            <div className="author">
+            <div className="author" ref={authorRef}>
               <img src={info.aut_photo} alt="" />
               <span className="name">{info.aut_name}</span>
               <span
@@ -115,9 +144,9 @@ const Article = () => {
             </span>
           }
         >
-          {true && (
+          {isShowAuthor && (
             <div className="nav-author">
-              <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
+              <img src={info.aut_photo} alt="" />
               <span className="name">{info.is_followed}</span>
               <span
                 className={classNames(
