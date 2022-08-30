@@ -17,18 +17,19 @@ export function getArticleInfo(id: string): RootThunkAction {
   }
 }
 
-
 /**
  * @description: 获取文章评论
- * @param {string} 文章id 
+ * @param {string} article_id 文章id
+ * @param {string} offset last_id
  * @return {*}
  */
-export function getCommentList(id: string): RootThunkAction {
+export function getCommentList(article_id: string, offset?: string): RootThunkAction {
   return async dispatch => {
     const res = await request.get<ApiResponse<CommentRes>>('/comments', {
       params: {
         type: 'a',
-        source: id
+        source: article_id,
+        offset
       }
     })
 

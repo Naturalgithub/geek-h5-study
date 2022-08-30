@@ -1,9 +1,5 @@
 import Icon from "@/components/Icon";
-import {
-  changeActive,
-  getAllChannel,
-  getUserChannel,
-} from "@/store/actions/channel";
+import { changeActive, getUserChannel } from "@/store/actions/channel";
 import { RootState } from "@/types/store";
 import { useInitialState } from "@/utils/hooks";
 import { Popup } from "antd-mobile";
@@ -18,7 +14,7 @@ import styles from "./index.module.scss";
 
 const Home = () => {
   const { userChannels } = useInitialState(getUserChannel, "channel");
-  useInitialState(getAllChannel, "channel");
+  // useInitialState(getAllChannel, "channel");
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const { active } = useSelector((state: RootState) => state.channel);

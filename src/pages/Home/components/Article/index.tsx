@@ -6,7 +6,6 @@ import styles from "./index.module.scss";
 import Icon from "@/components/Icon";
 import { getArticleInfo, getCommentList } from "@/store/actions/article";
 import { RootState } from "@/types/store";
-import { useInitialState } from "@/utils/hooks";
 import dayjs from "dayjs";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
@@ -74,10 +73,20 @@ const Article = () => {
   }, []);
 
   // 组件中发送请求
-  const { comment } = useInitialState(
-    () => getCommentList(Params.id),
-    "article"
-  );
+  // const { comment } = useInitialState(
+  //   () => () => getCommentList(Params.id),
+  //   "article"
+  // );
+
+  // 获取评论数据
+  const {
+    comment: { results = [], total_count = -1, last_id, end_id = "" },
+  } = useSelector((state: RootState) => state.article);
+  const hasMore = last_id !== end_id;
+
+  const loadMore = async () => {
+    await dispatch(getCommentList(Params.id, last_id));
+  };
 
   const renderArticle = () => {
     // 文章详情
@@ -129,7 +138,7 @@ const Article = () => {
             {info.comm_count === 0 ? (
               <h3>暂无评论</h3>
             ) : (
-              comment.results?.map((item) => (
+              results?.map((item) => (
                 <CommentItem
                   key={item.com_id}
                   type="normal"
@@ -137,12 +146,7 @@ const Article = () => {
                 ></CommentItem>
               ))
             )}
-            <InfiniteScroll
-              hasMore={false}
-              loadMore={async () => {
-                console.log(1);
-              }}
-            />
+            <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
           </div>
         </div>
       </div>
@@ -179,7 +183,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter info={info} />
       </div>
     </div>
   );

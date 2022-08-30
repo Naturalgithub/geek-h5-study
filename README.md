@@ -18,3 +18,7 @@
 3. git 443 关掉vpn重试就好了
 4. 优化： 把channel从home剥离出来
 5. redux 用点语法return state useSelector 不更新 建议用 produce方法管理reducer 一劳永逸
+6. 无限滚动有两种解决方式，
+   - a. 时间戳最新时间，返回为空停止滚动，
+   - b. 返回对象给last_id  end_id 只要 lastId不等于endId 则表示还有数据，继续发送请求，等于的话停止滚动
+7. 

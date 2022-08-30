@@ -41,23 +41,24 @@ export function useCountDown() {
   }
 }
 
+// 自定义的hooks
 /**
  * 1. 自动useEffect发送请求
  * 2. 通过useSelector获取到数据并返回
  */
-export function useInitialState<K extends keyof RootState>(action: () => void, stateName: K) {
-  const dispatch = useDispatch();
-
+export function useInitialState<K extends keyof RootState>(
+  action: () => void,
+  stateName: K
+) {
+  const dispatch = useDispatch()
   // 进入组件，就需要发送请求
-  const state = useSelector(
-    (state: RootState) => state[stateName]
-  );
+  useEffect(() => {
+
+    dispatch(action())
+
+  }, [dispatch, action])
 
   // 进入组件，需要获取redux的数据
-  useEffect(() => {
-    dispatch(action());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-
+  const state = useSelector((state: RootState) => state[stateName])
   return state
 }
